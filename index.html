@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panoptes – See Everything. Miss Nothing</title>
+
+  <!-- Google Font for technical feel -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --bg-deep: #02030f;
+      --accent: #38bdf8;
+      --accent-soft: #7dd3fc;
+      --text-main: #e5e7eb;
+      --text-dim: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      background: radial-gradient(circle at top, #020617, #000000);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* ===== Animated Background ===== */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+
+    /* ===== Layout ===== */
+    header {
+      padding: 6rem 2rem 5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3.2rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    header p {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-dim);
+    }
+
+    .cta {
+      margin-top: 2.5rem;
+    }
+
+    .cta a {
+      display: inline-block;
+      margin: 0.4rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
+
+    .cta a:hover {
+      background: var(--accent);
+      color: var(--bg-dark);
+    }
+
+    section {
+      padding: 4.5rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-soft);
+    }
+
+    section p.section-desc {
+      color: var(--text-dim);
+      max-width: 800px;
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(6px);
+      border-radius: 14px;
+      padding: 2rem;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .card h3 {
+      color: var(--accent);
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ===== Code Overlay Effect ===== */
+    .code-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(56,189,248,0.04) 0px,
+        rgba(56,189,248,0.04) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Starfield Background -->
+  <canvas id="space"></canvas>
+  <div class="code-overlay"></div>
+
+  <header>
+    <h1>PANOPTES</h1>
+    <p>
+      An open-source, inventory-driven vulnerability management platform.
+      Panoptes correlates real software state with real CVEs — eliminating
+      blind spots, false negatives, and scanner guesswork.
+    </p>
+    <div class="cta">
+      <a href="https://github.com/Panoptes-See-Everything-Miss-Nothing" target="_blank">GitHub</a>
+      <a href="#architecture">Architecture</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Design Philosophy</h2>
+    <p class="section-desc">
+      Traditional scanners infer risk from exposed services. Panoptes takes a
+      different approach: it observes the system itself, builds a complete
+      inventory, and applies deterministic logic to vulnerability intelligence.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Inventory First</h3>
+        <p>
+          Endpoint sensors enumerate installed software, versions, patches,
+          and configurations — even if the software is dormant or unreachable
+          from the network.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Logic-Based CVE Matching</h3>
+        <p>
+          Instead of one signature per vulnerability, Panoptes evaluates
+          affected version ranges, vendor logic, and real-world applicability.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Explainable Results</h3>
+        <p>
+          Every finding is backed by evidence: software path, version,
+          detection logic, and reference data — no black boxes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <h2>Architecture</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Spectra — Sensor</h3>
+        <p>
+          A native endpoint sensor responsible for collecting precise inventory
+          data directly from the operating system.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Iris — Correlation Engine</h3>
+        <p>
+          A backend analysis engine that normalizes inventory data and correlates
+          it with vulnerability intelligence sources.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Future UI & API</h3>
+        <p>
+          Planned interfaces for visualization, automation, and integration
+          with SOC and vulnerability management workflows.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Panoptes · Open Source Vulnerability Intelligence ·
+      <a href="https://github.com/Panoptes-See-Everything-Miss-Nothing" target="_blank">GitHub</a>
+    </p>
+  </footer>
+
+  <!-- Starfield Animation Script -->
+  <script>
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const stars = Array.from({ length: 180 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      z: Math.random() * canvas.width
+    }));
+
+    function animate() {
+      ctx.fillStyle = 'rgba(2, 6, 23, 0.4)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const s of stars) {
+        s.z -= 2;
+        if (s.z <= 0) s.z = canvas.width;
+
+        const k = 128 / s.z;
+        const px = s.x * k + canvas.width / 2;
+        const py = s.y * k + canvas.height / 2;
+
+        if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+          const size = (1 - s.z / canvas.width) * 2;
+          ctx.fillStyle = '#38bdf8';
+          ctx.fillRect(px, py, size, size);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+
+</body>
+</html>
