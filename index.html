@@ -260,27 +260,32 @@
     window.addEventListener('resize', resize);
     resize();
 
-    const stars = Array.from({ length: 180 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      z: Math.random() * canvas.width
+    const stars = Array.from({ length: 400 }, () => ({
+      x: (Math.random() - 0.5) * canvas.width * 2,
+      y: (Math.random() - 0.5) * canvas.height * 2,
+      z: Math.random() * canvas.width * 0.8 + canvas.width * 0.2
     }));
 
     function animate() {
-      ctx.fillStyle = 'rgba(2, 6, 23, 0.4)';
+      ctx.fillStyle = 'rgba(2, 6, 23, 0.5)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       for (const s of stars) {
-        s.z -= 2;
-        if (s.z <= 0) s.z = canvas.width;
+        s.z -= 1.5;
+        if (s.z <= 0) {
+          s.z = canvas.width;
+          s.x = (Math.random() - 0.5) * canvas.width * 2;
+          s.y = (Math.random() - 0.5) * canvas.height * 2;
+        }
 
-        const k = 128 / s.z;
+        const k = 200 / s.z;
         const px = s.x * k + canvas.width / 2;
         const py = s.y * k + canvas.height / 2;
 
         if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
-          const size = (1 - s.z / canvas.width) * 2;
-          ctx.fillStyle = '#38bdf8';
+          const brightness = Math.max(0.5, 1 - s.z / canvas.width);
+          const size = Math.max(0.5, (1 - s.z / canvas.width) * 3);
+          ctx.fillStyle = `rgba(56, 189, 248, ${brightness * 0.9})`;
           ctx.fillRect(px, py, size, size);
         }
       }
